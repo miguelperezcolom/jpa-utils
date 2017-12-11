@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="pu0" />
+        <module name="pu1" />
+        <module name="pujoiner-plugin" />
+        <module name="tester" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="core" target="1.8" />
+      <module name="jpa-utils" target="1.5" />
+      <module name="pu0" target="1.5" />
+      <module name="pu1" target="1.5" />
+      <module name="pujoiner-plugin" target="1.5" />
+      <module name="tester" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
