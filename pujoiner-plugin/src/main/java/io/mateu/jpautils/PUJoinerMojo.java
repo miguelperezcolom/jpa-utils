@@ -1,5 +1,6 @@
 package io.mateu.jpautils;
 
+import com.google.common.base.Strings;
 import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -37,6 +38,12 @@ import java.util.jar.JarFile;
 @Mojo(name = "procesarpus", requiresDependencyResolution = ResolutionScope.COMPILE, defaultPhase = LifecyclePhase.COMPILE)
 public class PUJoinerMojo extends AbstractMojo {
 
+    @Parameter(required = true)
+    private String puname;
+
+    @Parameter
+    private String extendspu;
+
     @Parameter(property = "project.build.directory", readonly = true, required = true)
     private File outputDirectory;
 
@@ -63,7 +70,7 @@ public class PUJoinerMojo extends AbstractMojo {
                         if (entry != null) {
                             // META-INF/file.txt exists in foo.jar
                             String xml = CharStreams.toString(new InputStreamReader(jar.getInputStream(entry)));
-                            if (xml.contains("name=\"default\"")) projectClasspathList.add(f.toURI().toURL());
+                            if ((!Strings.isNullOrEmpty(extendspu) || xml.contains("name=\"" + extendspu + "\"")) || xml.contains("name=\"" + puname + "\"")) projectClasspathList.add(f.toURI().toURL());
                         } else {
                             projectClasspathList.add(f.toURI().toURL());
                         }
@@ -122,7 +129,7 @@ public class PUJoinerMojo extends AbstractMojo {
 
         String s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<persistence xmlns=\"http://java.sun.com/xml/ns/persistence\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence persistence_2_1.xsd\" version=\"2.1\">\n" +
-                "    <persistence-unit name=\"default\" transaction-type=\"RESOURCE_LOCAL\">\n" +
+                "    <persistence-unit name=\"" + puname + "\" transaction-type=\"RESOURCE_LOCAL\">\n" +
                 "        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>\n" +
                 "        \n" +
                 xml +
@@ -182,5 +189,13 @@ public class PUJoinerMojo extends AbstractMojo {
 
     public void setProject(MavenProject project) {
         this.project = project;
+    }
+
+    public void setPuname(String puname) {
+        this.puname = puname;
+    }
+
+    public void setExtendspu(String extendspu) {
+        this.extendspu = extendspu;
     }
 }
