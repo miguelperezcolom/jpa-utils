@@ -44,6 +44,9 @@ public class PUJoinerMojo extends AbstractMojo {
     @Parameter
     private String extendspu;
 
+    @Parameter
+    private String packages;
+
     @Parameter(property = "project.build.directory", readonly = true, required = true)
     private File outputDirectory;
 
@@ -85,12 +88,20 @@ public class PUJoinerMojo extends AbstractMojo {
             ConfigurationBuilder cb = new ConfigurationBuilder();
 
             List<String> packageNames = new ArrayList<String>();
-            for (File f : new File(project.getBuild().getOutputDirectory()).listFiles()) {
-                if (!f.getName().contains("-")) packageNames.add(f.getName());
+
+            if (!Strings.isNullOrEmpty(packages)) {
+
+                for (String s : packages.split("[,; ]]")) packageNames.add(s);
+
+            } else {
+
+                for (File f : new File(project.getBuild().getOutputDirectory()).listFiles()) {
+                    if (!f.getName().contains("-")) packageNames.add(f.getName());
+                }
+                if (!packageNames.contains("org")) packageNames.add("org");
+                if (!packageNames.contains("com")) packageNames.add("com");
+                if (!packageNames.contains("io")) packageNames.add("io");
             }
-            if (!packageNames.contains("org")) packageNames.add("org");
-            if (!packageNames.contains("com")) packageNames.add("com");
-            if (!packageNames.contains("io")) packageNames.add("io");
 
 
             for (String pn : packageNames) cb.addUrls(ClasspathHelper.forPackage(pn));
@@ -197,5 +208,14 @@ public class PUJoinerMojo extends AbstractMojo {
 
     public void setExtendspu(String extendspu) {
         this.extendspu = extendspu;
+    }
+
+
+    public String getPackages() {
+        return packages;
+    }
+
+    public void setPackages(String packages) {
+        this.packages = packages;
     }
 }
