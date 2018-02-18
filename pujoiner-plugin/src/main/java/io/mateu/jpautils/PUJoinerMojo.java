@@ -91,9 +91,13 @@ public class PUJoinerMojo extends AbstractMojo {
 
             if (!Strings.isNullOrEmpty(packages)) {
 
+                getLog().info("packages = " + packages);
+
                 for (String s : packages.split("[,; ]]")) packageNames.add(s);
 
             } else {
+
+                getLog().info("packages no está presente");
 
                 for (File f : new File(project.getBuild().getOutputDirectory()).listFiles()) {
                     if (!f.getName().contains("-")) packageNames.add(f.getName());
@@ -101,6 +105,10 @@ public class PUJoinerMojo extends AbstractMojo {
                 if (!packageNames.contains("org")) packageNames.add("org");
                 if (!packageNames.contains("com")) packageNames.add("com");
                 if (!packageNames.contains("io")) packageNames.add("io");
+            }
+
+            for (String p : packageNames) {
+                getLog().info("package " + p);
             }
 
 
@@ -115,6 +123,16 @@ public class PUJoinerMojo extends AbstractMojo {
             Set<Class<?>> clases = reflections.getTypesAnnotatedWith(Entity.class);
             clases.addAll(reflections.getTypesAnnotatedWith(Embeddable.class));
             clases.addAll(reflections.getTypesAnnotatedWith(Converter.class));
+
+            for (Class c : new ArrayList<Class<?>>(clases)) {
+                getLog().info("clase " + c.getName());
+                boolean ok = false;
+                for (String p : packageNames) if (c.getName().startsWith(p)) {
+                    ok = true;
+                    break;
+                }
+                if (!ok) clases.remove(c);
+            }
 
 
             escribirPersistenceXml(clases);
@@ -182,6 +200,7 @@ public class PUJoinerMojo extends AbstractMojo {
 //                "            <property name=\"eclipselink.cache.coordination.jms.factory\" value=\"java:comp/env/jms/mateu\"/>\n" +
 //                "\n" +
 //                "            <property name=\"eclipselink.target-database\" value=\"io.mateu.erp.model.util.MiPostgreSQLPlatform\"/>\n" +
+                "            <property name=\"eclipselink.target-database\" value=\"io.mateu.erp.model.util.MiPostgreSQLPlatform\"/>\n" +
                 "        </properties>\n" +
                 "    </persistence-unit>\n" +
                 "</persistence>";
