@@ -47,6 +47,9 @@ public class PUJoinerMojo extends AbstractMojo {
     @Parameter
     private String packages;
 
+    @Parameter
+    private String targetdatabase;
+
     @Parameter(property = "project.build.directory", readonly = true, required = true)
     private File outputDirectory;
 
@@ -200,7 +203,7 @@ public class PUJoinerMojo extends AbstractMojo {
 //                "            <property name=\"eclipselink.cache.coordination.jms.factory\" value=\"java:comp/env/jms/mateu\"/>\n" +
 //                "\n" +
 //                "            <property name=\"eclipselink.target-database\" value=\"io.mateu.erp.model.util.MiPostgreSQLPlatform\"/>\n" +
-                "            <property name=\"eclipselink.target-database\" value=\"io.mateu.erp.model.util.MiPostgreSQLPlatform\"/>\n" +
+                "            <property name=\"eclipselink.target-database\" value=\"" + ((!Strings.isNullOrEmpty(getTargetdatabase()))?getTargetdatabase():"io.mateu.erp.model.util.MiPostgreSQLPlatform") + "\"/>\n" +
                 "        </properties>\n" +
                 "    </persistence-unit>\n" +
                 "</persistence>";
@@ -236,5 +239,13 @@ public class PUJoinerMojo extends AbstractMojo {
 
     public void setPackages(String packages) {
         this.packages = packages;
+    }
+
+    public String getTargetdatabase() {
+        return targetdatabase;
+    }
+
+    public void setTargetdatabase(String targetdatabase) {
+        this.targetdatabase = targetdatabase;
     }
 }
