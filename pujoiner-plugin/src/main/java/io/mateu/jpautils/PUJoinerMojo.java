@@ -96,7 +96,7 @@ public class PUJoinerMojo extends AbstractMojo {
 
                 getLog().info("packages = " + packages);
 
-                for (String s : packages.split("[,; ]]")) packageNames.add(s);
+                for (String s : packages.split("[,; ]")) packageNames.add(s);
 
             } else {
 
