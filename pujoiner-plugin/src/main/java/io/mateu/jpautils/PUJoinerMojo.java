@@ -170,40 +170,8 @@ public class PUJoinerMojo extends AbstractMojo {
                 "\n" +
                 "        <validation-mode>AUTO</validation-mode>\n" +
                 "\n" +
-//                "        <!--\n" +
-//                "        CHECK: https://wiki.eclipse.org/EclipseLink/FAQ/JPA/PostgreSQL\n" +
-//                "        -->\n" +
                 "        <properties>\n" +
-//                "\n" +
-//                "            <property name=\"eclipselink.logging.level\" value=\"FINE\"/>\n" +
-//                "\n" +
-//                "            <property name=\"eclipselink.weaving\" value=\"static\"/>\n" +
-//                "\n" +
-//                "\n" +
-//                "            <!-- this property is overrided by eclipselink.ddl-generation -->\n" +
-//                "            <property name=\"javax.persistence.schema-generation.database.action\" value=\"drop-and-create\"/>\n" +
-//                "            <property name=\"xxjavax.persistence.schema-generation.database.action\" value=\"create\"/>\n" +
-//                "            \n" +
-//                "            <property name=\"javax.persistence.jdbc.driver\" value=\"org.postgresql.Driver\" />\n" +
-//                "            <property name=\"xxjavax.persistence.jdbc.url\"    value=\"jdbc:postgresql://localhost:5432/xxx\" />\n" +
-//                "            <property name=\"javax.persistence.jdbc.user\" value=\"postgres\" />\n" +
-//                "            <property name=\"javax.persistence.jdbc.password\" value=\"aa\" />\n" +
-//                "\n" +
-//                "            <!--\n" +
-//                "            <property name=\"eclipselink.ddl-generation\" value=\"create-tables\" />\n" +
-//                "            -->\n" +
-//                "            <property name=\"eclipselink.ddl-generation\" value=\"create-or-extend-tables\" />\n" +
-//                "            <property name=\"xxeclipselink.ddl-generation\" value=\"drop-and-create-tables\" />\n" +
-//                "            <property name=\"eclipselink.ddl-generation.output-mode\" value=\"database\" />\n" +
-//                "            <property name=\"eclipselink.jdbc.uppercase-columns\" value=\"true\"/>\n" +
-//                "            <property name=\"eclipselink.jpa.uppercase-column-names\" value=\"true\"/>\n" +
-//                "\n" +
-//                "            <property name=\"xxeclipselink.cache.coordination.protocol\" value=\"jms\"/>\n" +
-//                "            <property name=\"eclipselink.cache.coordination.jms.topic\" value=\"java:comp/env/jms/l2cache\"/>\n" +
-//                "            <property name=\"eclipselink.cache.coordination.jms.factory\" value=\"java:comp/env/jms/mateu\"/>\n" +
-//                "\n" +
-//                "            <property name=\"eclipselink.target-database\" value=\"io.mateu.erp.model.util.MiPostgreSQLPlatform\"/>\n" +
-                "            <property name=\"eclipselink.target-database\" value=\"" + ((!Strings.isNullOrEmpty(getTargetdatabase()))?getTargetdatabase():"io.mateu.erp.model.util.MiPostgreSQLPlatform") + "\"/>\n" +
+                //"            <property name=\"eclipselink.target-database\" value=\"" + ((!Strings.isNullOrEmpty(getTargetdatabase()))?getTargetdatabase():"io.mateu.common.model.util.MiPostgreSQLPlatform") + "\"/>\n" +
                 "        </properties>\n" +
                 "    </persistence-unit>\n" +
                 "</persistence>";

@@ -210,7 +210,7 @@ public class AnnotationProcessor extends AbstractProcessor {
                     "\n" +
                     "\n" +
                     "\n" +
-                    "        <property name=\"eclipselink.target-database\" value=\"io.mateu.jpautils.core.MiPostgreSQLPlatform\"/>\n" +
+                    //"        <property name=\"eclipselink.target-database\" value=\"io.mateu.jpautils.core.MiPostgreSQLPlatform\"/>\n" +
                     "    </properties>\n" +
                     "</persistence-unit>\n" +
                     "</persistence>");
