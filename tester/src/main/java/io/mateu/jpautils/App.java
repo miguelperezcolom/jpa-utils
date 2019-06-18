@@ -15,7 +15,10 @@ public class App
     public static void main( String[] args ) throws Throwable {
         System.out.println( "Hello World!" );
 
-        System.setProperty("javax.persistence.jdbc.url", "jdbc:postgresql://localhost:5432/xxx");
+        Helper.loadProperties();
+
+
+
 
         test1();
 

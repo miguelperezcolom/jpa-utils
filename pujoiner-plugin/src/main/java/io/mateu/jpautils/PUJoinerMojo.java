@@ -5,9 +5,11 @@ import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.MojoExecution;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.descriptor.PluginDescriptor;
+import org.apache.maven.plugin.lifecycle.Phase;
 import org.apache.maven.plugins.annotations.*;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.classworlds.realm.ClassRealm;
@@ -56,8 +58,13 @@ public class PUJoinerMojo extends AbstractMojo {
     @Parameter(property = "project", readonly = true, required = true)
     private MavenProject project;
 
+    @Component
+    private MojoExecution execution;
+
 
     public void execute() throws MojoExecutionException, MojoFailureException {
+
+        getLog().info("Fase=" + execution.getLifecyclePhase());
 
         getLog().info("Creando persistence.xml");
 
@@ -65,7 +72,7 @@ public class PUJoinerMojo extends AbstractMojo {
 
         List<String> classpathElements = null;
         try {
-            classpathElements = project.getCompileClasspathElements();
+            classpathElements = "test-compile".equalsIgnoreCase(execution.getLifecyclePhase())?project.getTestClasspathElements():project.getCompileClasspathElements();
             List<URL> projectClasspathList = new ArrayList<URL>();
             for (String element : classpathElements) {
                 try {
@@ -151,10 +158,10 @@ public class PUJoinerMojo extends AbstractMojo {
     }
     private void escribirPersistenceXml(Set<Class<?>> clases) throws IOException {
 
-        File f = new File(project.getBuild().getOutputDirectory() + "/META-INF");
+        File f = new File(("test-compile".equalsIgnoreCase(execution.getLifecyclePhase())?project.getBuild().getTestOutputDirectory():project.getBuild().getOutputDirectory()) + "/META-INF");
         if (!f.exists()) f.mkdirs();
 
-        f = new File(project.getBuild().getOutputDirectory() + "/META-INF/persistence.xml");
+        f = new File(f.getAbsolutePath() + "/persistence.xml");
 
         String xml = "";
         for (Class c : clases) xml += "         <class>" + c.getCanonicalName() + "</class>\n";

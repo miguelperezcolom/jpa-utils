@@ -23,6 +23,29 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+
+
+
+            <plugin>
+                <groupId>io.mateu.jpa-utils</groupId>
+                <artifactId>pujoiner-plugin</artifactId>
+                <version>0.0.1</version>
+
+                <configuration>
+                    <puname>testpu</puname>
+                    <extendspu>pux</extendspu>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>procesarpus</goal>
+                        </goals>
+                    </execution>
+                </executions>
+
+            </plugin>
         </plugins>
     </build>
 
@@ -34,7 +57,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>3.8.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -49,5 +72,14 @@
         </dependency>
 
 
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.197</version>
+        </dependency>
+
     </dependencies>
+
+
 </project>
