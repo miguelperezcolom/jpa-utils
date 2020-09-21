@@ -9,21 +9,17 @@
     <version>0.0.2</version>
     <modules>
         <module>core</module>
-        <module>pu0</module>
-        <module>pu1</module>
-        <module>tester</module>
         <module>pujoiner-plugin</module>
     </modules>
     <packaging>pom</packaging>
 
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.16.10</version>
-            <scope>provided</scope>
-        </dependency>
 
         <dependency>
             <groupId>org.postgresql</groupId>

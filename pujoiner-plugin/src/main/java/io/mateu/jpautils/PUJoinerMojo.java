@@ -169,7 +169,7 @@ public class PUJoinerMojo extends AbstractMojo {
         String s = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<persistence xmlns=\"http://java.sun.com/xml/ns/persistence\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://java.sun.com/xml/ns/persistence persistence_2_1.xsd\" version=\"2.1\">\n" +
                 "    <persistence-unit name=\"" + puname + "\" transaction-type=\"RESOURCE_LOCAL\">\n" +
-                "        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>\n" +
+                //"        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>\n" +
                 "        \n" +
                 xml +
                 "\n" +

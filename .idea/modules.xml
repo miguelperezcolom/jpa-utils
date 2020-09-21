@@ -4,10 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/jpa-utils.iml" filepath="$PROJECT_DIR$/jpa-utils.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pu0/pu0.iml" filepath="$PROJECT_DIR$/pu0/pu0.iml" />
-      <module fileurl="file://$PROJECT_DIR$/pu1/pu1.iml" filepath="$PROJECT_DIR$/pu1/pu1.iml" />
       <module fileurl="file://$PROJECT_DIR$/pujoiner-plugin/pujoiner-plugin.iml" filepath="$PROJECT_DIR$/pujoiner-plugin/pujoiner-plugin.iml" />
-      <module fileurl="file://$PROJECT_DIR$/tester/tester.iml" filepath="$PROJECT_DIR$/tester/tester.iml" />
     </modules>
   </component>
 </project>

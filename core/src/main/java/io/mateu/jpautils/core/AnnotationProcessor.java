@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Set;
 
 @SupportedAnnotationTypes({ "io.mateu.jpautils.core.PU" })
-@SupportedSourceVersion(SourceVersion.RELEASE_6)
+@SupportedSourceVersion(SourceVersion.RELEASE_8)
 public class AnnotationProcessor extends AbstractProcessor {
 
     private int round = 0;
