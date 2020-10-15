@@ -83,7 +83,7 @@ public class PUJoinerMojo extends AbstractMojo {
                         if (entry != null) {
                             // META-INF/file.txt exists in foo.jar
                             String xml = CharStreams.toString(new InputStreamReader(jar.getInputStream(entry)));
-                            for (String s : puname.split("[,; ]")) {
+                            for (String s : extendspu.split("[,; ]")) {
                                 if ((!Strings.isNullOrEmpty(s) && xml.contains("name=\"" + s + "\"")) || xml.contains("name=\"" + s + "\"")) projectClasspathList.add(f.toURI().toURL());
                             }
                         } else {
