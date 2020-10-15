@@ -6,7 +6,7 @@
 
     <groupId>io.mateu.jpa-utils</groupId>
     <artifactId>parent</artifactId>
-    <version>0.0.2</version>
+    <version>0.0.3</version>
     <modules>
         <module>core</module>
         <module>pujoiner-plugin</module>
