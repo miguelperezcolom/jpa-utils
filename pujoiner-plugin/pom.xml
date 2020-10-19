@@ -11,6 +11,7 @@
     <packaging>maven-plugin</packaging>
     <name>pujoiner-plugin Maven Mojo</name>
     <url>http://maven.apache.org</url>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.apache.maven/maven-plugin-api -->
         <dependency>
@@ -50,21 +51,5 @@
         </dependency>
 
     </dependencies>
-
-
-    <distributionManagement>
-        <repository>
-            <uniqueVersion>false</uniqueVersion>
-            <id>mateu-central</id>
-            <url>http://nexus.mateu.io/repository/mateu-central/</url>
-            <layout>default</layout>
-        </repository>
-        <snapshotRepository>
-            <uniqueVersion>true</uniqueVersion>
-            <id>mateu-central</id>
-            <url>http://nexus.mateu.io/repository/mateu-central/</url>
-            <layout>default</layout>
-        </snapshotRepository>
-    </distributionManagement>
 
 </project>
