@@ -70,89 +70,96 @@ public class PUJoinerMojo extends AbstractMojo {
 
         long t0 = System.currentTimeMillis();
 
-        List<String> classpathElements = null;
         try {
-            classpathElements = "test-compile".equalsIgnoreCase(execution.getLifecyclePhase())?project.getTestClasspathElements():project.getCompileClasspathElements();
-            List<URL> projectClasspathList = new ArrayList<URL>();
-            for (String element : classpathElements) {
-                try {
-                    File f = new File(element);
-                    if (f.getName().endsWith(".jar")) {
-                        JarFile jar = new JarFile(f);
-                        JarEntry entry = jar.getJarEntry("META-INF/persistence.xml");
-                        if (entry != null) {
-                            // META-INF/file.txt exists in foo.jar
-                            String xml = CharStreams.toString(new InputStreamReader(jar.getInputStream(entry)));
-                            for (String s : extendspu.split("[,; ]")) {
-                                if ((!Strings.isNullOrEmpty(s) && xml.contains("name=\"" + s + "\"")) || xml.contains("name=\"" + s + "\"")) projectClasspathList.add(f.toURI().toURL());
+
+            List<String> classpathElements = null;
+            try {
+                classpathElements = "test-compile".equalsIgnoreCase(execution.getLifecyclePhase())?project.getTestClasspathElements():project.getCompileClasspathElements();
+                List<URL> projectClasspathList = new ArrayList<URL>();
+                for (String element : classpathElements) {
+                    try {
+                        File f = new File(element);
+                        if (f.getName().endsWith(".jar")) {
+                            JarFile jar = new JarFile(f);
+                            JarEntry entry = jar.getJarEntry("META-INF/persistence.xml");
+                            if (entry != null) {
+                                // META-INF/file.txt exists in foo.jar
+                                String xml = CharStreams.toString(new InputStreamReader(jar.getInputStream(entry)));
+                                if (!Strings.isNullOrEmpty(extendspu)) for (String s : extendspu.split("[,; ]")) {
+                                    if ((!Strings.isNullOrEmpty(s) && xml.contains("name=\"" + s + "\"")) || xml.contains("name=\"" + s + "\"")) projectClasspathList.add(f.toURI().toURL());
+                                }
+                            } else {
+                                projectClasspathList.add(f.toURI().toURL());
                             }
                         } else {
                             projectClasspathList.add(f.toURI().toURL());
                         }
-                    } else {
-                        projectClasspathList.add(f.toURI().toURL());
+                    } catch (MalformedURLException e) {
+                        throw new MojoExecutionException(element + " is an invalid classpath element", e);
                     }
-                } catch (MalformedURLException e) {
-                    throw new MojoExecutionException(element + " is an invalid classpath element", e);
                 }
-            }
 
-            ConfigurationBuilder cb = new ConfigurationBuilder();
+                ConfigurationBuilder cb = new ConfigurationBuilder();
 
-            List<String> packageNames = new ArrayList<String>();
+                List<String> packageNames = new ArrayList<String>();
 
-            if (!Strings.isNullOrEmpty(packages)) {
+                if (!Strings.isNullOrEmpty(packages)) {
 
-                getLog().info("packages = " + packages);
+                    getLog().info("packages = " + packages);
 
-                for (String s : packages.split("[,; ]")) packageNames.add(s);
+                    for (String s : packages.split("[,; ]")) packageNames.add(s);
 
-            } else {
+                } else {
 
-                getLog().info("packages no está presente");
+                    getLog().info("packages no está presente");
 
-                for (File f : new File(project.getBuild().getOutputDirectory()).listFiles()) {
-                    if (!f.getName().contains("-")) packageNames.add(f.getName());
+                    for (File f : new File(project.getBuild().getOutputDirectory()).listFiles()) {
+                        if (!f.getName().contains("-")) packageNames.add(f.getName());
+                    }
+                    if (!packageNames.contains("org")) packageNames.add("org");
+                    if (!packageNames.contains("com")) packageNames.add("com");
+                    if (!packageNames.contains("io")) packageNames.add("io");
                 }
-                if (!packageNames.contains("org")) packageNames.add("org");
-                if (!packageNames.contains("com")) packageNames.add("com");
-                if (!packageNames.contains("io")) packageNames.add("io");
-            }
 
-            for (String p : packageNames) {
-                getLog().info("package " + p);
-            }
-
-
-            for (String pn : packageNames) cb.addUrls(ClasspathHelper.forPackage(pn));
-
-            URLClassLoader loader = new URLClassLoader(projectClasspathList.toArray(new URL[0]));
-            // ... and now you can pass the above classloader to Reflections
-
-            Reflections reflections = new Reflections(cb.build(loader));
-
-
-            Set<Class<?>> clases = reflections.getTypesAnnotatedWith(Entity.class);
-            clases.addAll(reflections.getTypesAnnotatedWith(Embeddable.class));
-            clases.addAll(reflections.getTypesAnnotatedWith(Converter.class));
-
-            for (Class c : new ArrayList<Class<?>>(clases)) {
-                getLog().info("clase " + c.getName());
-                boolean ok = false;
-                for (String p : packageNames) if (c.getName().startsWith(p)) {
-                    ok = true;
-                    break;
+                for (String p : packageNames) {
+                    getLog().info("package " + p);
                 }
-                if (!ok) clases.remove(c);
+
+
+                for (String pn : packageNames) cb.addUrls(ClasspathHelper.forPackage(pn));
+
+                URLClassLoader loader = new URLClassLoader(projectClasspathList.toArray(new URL[0]));
+                // ... and now you can pass the above classloader to Reflections
+
+                Reflections reflections = new Reflections(cb.build(loader));
+
+
+                Set<Class<?>> clases = reflections.getTypesAnnotatedWith(Entity.class);
+                clases.addAll(reflections.getTypesAnnotatedWith(Embeddable.class));
+                clases.addAll(reflections.getTypesAnnotatedWith(Converter.class));
+
+                for (Class c : new ArrayList<Class<?>>(clases)) {
+                    getLog().info("clase " + c.getName());
+                    boolean ok = false;
+                    for (String p : packageNames) if (c.getName().startsWith(p)) {
+                        ok = true;
+                        break;
+                    }
+                    if (!ok) clases.remove(c);
+                }
+
+
+                escribirPersistenceXml(clases);
+
+            } catch (DependencyResolutionRequiredException e) {
+                new MojoExecutionException("Dependency resolution failed", e);
+            } catch (IOException e) {
+                new MojoExecutionException("Fallo al escribir el fichero persistence.xml", e);
             }
 
-
-            escribirPersistenceXml(clases);
-
-        } catch (DependencyResolutionRequiredException e) {
-            new MojoExecutionException("Dependency resolution failed", e);
-        } catch (IOException e) {
-            new MojoExecutionException("Fallo al escribir el fichero persistence.xml", e);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw e;
         }
 
         long t = System.currentTimeMillis();
